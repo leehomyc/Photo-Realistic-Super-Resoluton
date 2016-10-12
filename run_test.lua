@@ -19,6 +19,7 @@ opt = {
   loadSize=96,
   test_folder='/media/harryyang/New Volume/vision-harry/mp4_videos/test_folder',
   model_file='/media/DATA/MODELS/SUPER_RES/checkpoints/adv_color_very_deep_good_init_D_smallerrate_adversarial_G_3',
+  result_path='result'
 }
 for k,v in pairs(opt) do opt[k] = tonumber(os.getenv(k)) or os.getenv(k) or opt[k] end
 print(opt)
@@ -37,8 +38,8 @@ for i = 1, opt.niter do
   fake[fake:gt(1)]=1
   fake[fake:lt(0)]=0
   for j=1,opt.batchSize do
-    image.save(string.format('/media/harryyang/New Volume/vision-harry/mp4_videos/test_folder_hao_res/video_raw/raw_%04d.png',cnt),image.toDisplayTensor(real[j]))
-    image.save(string.format('/media/harryyang/New Volume/vision-harry/mp4_videos/test_folder_hao_res/bicubic/fake_%04d.png',cnt),image.toDisplayTensor(fake[j]))
+    image.save(string.format('%s/raw_%04d.png',opt.result_path,cnt),image.toDisplayTensor(real[j]))
+    image.save(string.format('%s/fake_%04d.png'opt.result_path,cnt),image.toDisplayTensor(fake[j]))
     cnt=cnt+1
   end
 end
