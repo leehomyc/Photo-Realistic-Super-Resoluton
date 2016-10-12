@@ -15,7 +15,7 @@ paths.dofile('dataset.lua')
 ------------------------------------------
 -------- COMMON CACHES and PATHS
 -- Check for existence of opt.data
-opt.data = os.getenv('DATA_ROOT') or '/media/harryyang/New Volume/vision-harry/mp4_videos/train_folder'
+opt.data = os.getenv('DATA_ROOT') or opt.train_folder
 if not paths.dirp(opt.data) then
     error('Did not find directory: ', opt.data)
 end
@@ -28,7 +28,7 @@ local trainCache = paths.concat(cache, cache_prefix .. '_trainCache.t7')
 
 --------------------------------------------------------------------------------------------
 local loadSize   = {1, opt.loadSize}
-local sampleSize = {1, opt.fineSize}
+local sampleSize = {1, opt.loadSize}
 
 local function loadImage(path)
    local input = image.load(path, 3, 'float')

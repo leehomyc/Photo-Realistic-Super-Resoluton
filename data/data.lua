@@ -17,12 +17,6 @@ function data.new(n, dataset_name, opt_)
    if dataset_name==0 then
        donkey_file = 'donkey_folder_supres.lua'
    elseif dataset_name==1 then
-       donkey_file = 'donkey_folder_supres_scale.lua'
-   elseif dataset_name==2 then
-       donkey_file = 'donkey_folder_supres_scale2.lua'
-   elseif dataset_name==3 then
-       donkey_file = 'donkey_folder_supres_scale2_small.lua'
-    elseif dataset_name==4 then
        donkey_file = 'donkey_folder_supres_test.lua'
    end
 

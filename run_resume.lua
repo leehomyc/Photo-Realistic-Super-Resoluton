@@ -4,8 +4,8 @@ require 'optim'
 require 'image'
 require 'nngraph'
 require 'weight-init'
-local G=require 'mainx_test_adversarial_G.lua'
-local D=require 'mainx_test_adversarial_D.lua'
+local G=require 'adversarial_G.lua'
+local D=require 'adversarial_D.lua'
 util = paths.dofile('util.lua')
 
 opt = {
@@ -14,16 +14,20 @@ opt = {
   beta1 = 0.9,  
   batchSize=32,
   niter=250,
-  fineSize=96,
+  loadSize=96,
   ntrain = math.huge, 
-  name='adv_color_very_deep_good_init_D_smallerrate',
+  name='super_resolution',
   gpu=1,
   nThreads = 4,
   scale=4,
   loadSize=96,
+  train_folder='/media/harryyang/New Volume/vision-harry/mp4_videos/train_folder',
+  model_folder='/media/DATA/MODELS/SUPER_RES/checkpoints/',
+  D_path='/media/DATA/MODELS/SUPER_RES/checkpoints/adv_color_very_deep_good_init_adversarial_D_8'
+  G_path='/media/DATA/MODELS/SUPER_RES/checkpoints/adv_color_very_deep_good_init_adversarial_G_8'
 }
 torch.manualSeed(1)
--- one-line argument parser. parses enviroment variables to override the defaults
+
 for k,v in pairs(opt) do opt[k] = tonumber(os.getenv(k)) or os.getenv(k) or opt[k] end
 print(opt)
 
@@ -31,24 +35,11 @@ local DataLoader = paths.dofile('data/data.lua')
 data = DataLoader.new(opt.nThreads, 0, opt)
 print("Dataset: " .. opt.dataset, " Size: ", data:size())
 
-local function weights_init(m)
-   local name = torch.type(m)
-   if name:find('Convolution') then
-      m.weight:normal(0.0, 0.02)
-      m.bias:fill(0)
-   elseif name:find('BatchNormalization') then
-      if m.weight then m.weight:normal(1.0, 0.02) end
-      if m.bias then m.bias:fill(0) end
-   end
-end
-
 local real_label=1
 local fake_label=0
 
-local G=require 'mainx_test_adversarial_G.lua'
-local modelG = require('weight-init')(G(), 'kaiming')
-local D=require 'mainx_test_adversarial_D.lua'
-local modelD = require('weight-init')(D(),'kaiming')
+local modelG=util.load(opt.G_path,opt.gpu)
+local modelD=util.load(opt.D_path,opt.gpu)
 local criterion = nn.BCECriterion() 
 local criterion_mse = nn.MSECriterion()
 
@@ -63,15 +54,15 @@ optimStateD = {
     weightDecay=0.0001,
 }
 
-local input = torch.Tensor(opt.batchSize, 1, opt.fineSize/4, opt.fineSize/4) 
-local real = torch.Tensor(opt.batchSize,1,opt.fineSize-3,opt.fineSize-3)
-local real_uncropped = torch.Tensor(opt.batchSize,1,opt.fineSize,opt.fineSize)
-local output = torch.Tensor(opt.batchSize,1,opt.fineSize-3,opt.fineSize-3)
+local input = torch.Tensor(opt.batchSize, 1, opt.loadSize/4, opt.loadSize/4) 
+local real = torch.Tensor(opt.batchSize,1,opt.loadSize-3,opt.loadSize-3)
+local real_uncropped = torch.Tensor(opt.batchSize,1,opt.loadSize,opt.loadSize)
+local output = torch.Tensor(opt.batchSize,1,opt.loadSize-3,opt.loadSize-3)
 local errD, errG
 local epoch_tm = torch.Timer()
 local tm = torch.Timer()
-local test = torch.Tensor(1, opt.fineSize-3, opt.fineSize-3) 
-local test2 = torch.Tensor(1, opt.fineSize/4, opt.fineSize/4) 
+local test = torch.Tensor(1, opt.loadSize-3, opt.loadSize-3) 
+local test2 = torch.Tensor(1, opt.loadSize/4, opt.loadSize/4) 
 local label = torch.Tensor(opt.batchSize)
 
 if opt.gpu > 0 then
@@ -138,8 +129,6 @@ local fGx=function(x)
     local df_dg=modelD:updateGradInput(fake,df_do)
     modelG:backward(input,0.001*df_dg+0.999*df_do_mse)
     err_all=0.001*errG+0.999*errG_mse
-    print('errG:'..errG)
-    print('errG_mse:'..errG_mse)
     return err_all,gradientsG
 end
 
@@ -158,7 +147,6 @@ for epoch = 1, opt.niter do
       if counter % 10 == 0 then
           test:copy(real[1])
           print('test:')
-         
           local real_rgb=test
           image.save(opt.name..counter..'_real.png',real_rgb)
           test2:copy(input[1])
@@ -166,9 +154,6 @@ for epoch = 1, opt.niter do
           fake[fake:gt(1)]=1
           fake[fake:lt(0)]=0
           test:copy(fake[1])
-          print(torch.max(fake))
-          print(torch.min(fake))
-         -- local test_rgb=image.lab2rgb(test)
           image.save(opt.name..counter..'_fake.png',test)
       end
       
@@ -184,8 +169,8 @@ for epoch = 1, opt.niter do
    --paths.mkdir('/media/DATA/MODELS/SUPER_RES/checkpoints')
    parametersD, gradientsD= nil, nil
    parametersG, gradientsG = nil, nil
-   util.save('/media/DATA/MODELS/SUPER_RES/checkpoints/' .. opt.name .. '_adversarial_G_' .. epoch, modelG, opt.gpu)
-   util.save('/media/DATA/MODELS/SUPER_RES/checkpoints/' .. opt.name .. '_adversarial_D_' .. epoch, modelD, opt.gpu)
+   util.save(opt.model_folder .. opt.name .. '_adversarial_G_' .. epoch, modelG, opt.gpu)
+   util.save(opt.model_folder .. opt.name .. '_adversarial_D_' .. epoch, modelD, opt.gpu)
    parametersG, gradientsG = modelG:getParameters()
    parametersD, gradientsD=modelD:getParameters()
    print(('End of epoch %d / %d \t Time Taken: %.3f'):format(
