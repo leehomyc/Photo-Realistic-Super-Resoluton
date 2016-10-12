@@ -4,26 +4,25 @@ Torch Implementation of "Photo-Realistic Single Image Super-Resolution Using a G
 
 This is a prototype implementation developed by [Harry Yang](https://scholar.google.com/citations?user=jpIFgToAAAAJ&hl=en&authuser=3). 
 
-<img src='pics/input_0001.png' width=320> <img src='pics/output_0001.png' width=320>
+<img src='pics/input.png' width=160> <img src='pics/output_0001.png' width=160>
 
 ## Getting started
 
 ####Training
-prepare your images under a sub-folder of a root folder and run:
+prepare your images under a sub-folder of a root folder
 ``` bash
 train_folder=your_root_folder model_folder=your_save_folder th run_sr.lua 
 ```
 
-By default it resizes the images to 96x96 as ground truth and 24x24 as input, but you can specify the size using `loadSize` and `scale`
+By default it resizes the images to 96x96 as ground truth and 24x24 as input, but you can specify the size using `loadSize` and `scale`.
 
 ####Loading a saved model to train
-run:
 ```
 D_path=your_saved_D_model G_path=your_saved_G_model th run_resume.lua
 ```
 
 ####Testing
-prepare your test images under a sub-folder of a root folder and run:
+prepare your test images under a sub-folder of a root folder
 ```
 test_folder=your_root_folder model_file=your_G_model result_path=your_result_path th run_test.lua
 ```
