@@ -4,7 +4,7 @@ Torch Implementation of "Photo-Realistic Single Image Super-Resolution Using a G
 
 This is a prototype implementation developed by [Harry Yang](https://scholar.google.com/citations?user=jpIFgToAAAAJ&hl=en&authuser=3). 
 
-<img src='pics/input.png' width=320> <img src='pics/output.png' width=320>
+<img src='pics/input.png' width=160> <img src='pics/output.png' width=160>
 
 ## Getting started
 
