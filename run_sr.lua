@@ -20,9 +20,8 @@ opt = {
   gpu=1,
   nThreads = 4,
   scale=4,
-  loadSize=96,
-  train_folder='/media/harryyang/New Volume/vision-harry/mp4_videos/train_folder',
-  model_folder='/media/DATA/MODELS/SUPER_RES/checkpoints/',
+  train_folder='',
+  model_folder='',
 }
 torch.manualSeed(1)
 
@@ -36,9 +35,9 @@ print("Dataset: " .. opt.dataset, " Size: ", data:size())
 local real_label=1
 local fake_label=0
 
-local G=require 'mainx_test_adversarial_G.lua'
+local G=require 'adversarial_G.lua'
 local modelG = require('weight-init')(G(), 'kaiming')
-local D=require 'mainx_test_adversarial_D.lua'
+local D=require 'adversarial_D.lua'
 local modelD = require('weight-init')(D(),'kaiming')
 local criterion = nn.BCECriterion() 
 local criterion_mse = nn.MSECriterion()
@@ -146,11 +145,10 @@ for epoch = 1, opt.niter do
       print('count: '..counter)
       if counter % 10 == 0 then
           test:copy(real[1])
-          print('test:')
           local real_rgb=test
           image.save(opt.name..counter..'_real.png',real_rgb)
           test2:copy(input[1])
-          image.save(opt.name..counter..'_test.png',test2)
+          image.save(opt.name..counter..'_input.png',test2)
           fake[fake:gt(1)]=1
           fake[fake:lt(0)]=0
           test:copy(fake[1])

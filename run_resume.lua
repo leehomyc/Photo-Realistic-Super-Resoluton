@@ -21,10 +21,10 @@ opt = {
   nThreads = 4,
   scale=4,
   loadSize=96,
-  train_folder='/media/harryyang/New Volume/vision-harry/mp4_videos/train_folder',
-  model_folder='/media/DATA/MODELS/SUPER_RES/checkpoints/',
-  D_path='/media/DATA/MODELS/SUPER_RES/checkpoints/adv_color_very_deep_good_init_adversarial_D_8'
-  G_path='/media/DATA/MODELS/SUPER_RES/checkpoints/adv_color_very_deep_good_init_adversarial_G_8'
+  train_folder='',
+  model_folder='',
+  D_path=''
+  G_path=''
 }
 torch.manualSeed(1)
 

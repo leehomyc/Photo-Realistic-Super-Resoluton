@@ -14,18 +14,18 @@ prepare your images under a sub-folder of a root folder and run:
 train_folder=your_root_folder model_folder=your_save_folder th run_sr.lua 
 ```
 
-By default it resizes the images to 96x96 as ground truth and 24x24 as input, but you can specify the size using `loadSize` and `scale`
+By default it resizes the images to 96x96 as ground truth and 24x24 as input, but you can specify the size using `loadSize`. Note current generator network only supports 4x super-resolution.
 
 ####Loading a saved model to train
 run:
 ```
-D_path=your_saved_D_model G_path=your_saved_G_model th run_resume.lua
+D_path=your_saved_D_model G_path=your_saved_G_model train_folder=your_root_folder model_folder=your_save_folder th run_resume.lua
 ```
 
 ####Testing
 prepare your test images under a sub-folder of a root folder and run:
 ```
-test_folder=your_root_folder model_file=your_G_model result_path=your_result_path th run_test.lua
+test_folder=your_root_folder model_file=your_G_model result_path=location_to_save_results th run_test.lua
 ```
 
 ## Report Issues

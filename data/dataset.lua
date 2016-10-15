@@ -333,7 +333,7 @@ local function tableToOutput(self, dataTable, dataTable2,scalarTable)
    data = torch.Tensor(quantity,
 		       self.sampleSize[1], self.sampleSize[2], self.sampleSize[3])
    data2 = torch.Tensor(quantity,
-           self.sampleSize[1], self.sampleSize[2]/4, self.sampleSize[3]/4)
+           self.sampleSize[1], self.sampleSize[2]/opt.scale, self.sampleSize[3]/opt.scale)
    scalarLabels = torch.LongTensor(quantity):fill(-1111)
    for i=1,#dataTable do
       data[i]:copy(dataTable[i])

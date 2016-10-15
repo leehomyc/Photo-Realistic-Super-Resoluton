@@ -17,9 +17,9 @@ opt = {
   nThreads = 4,
   scale=4,
   loadSize=96,
-  test_folder='/media/harryyang/New Volume/vision-harry/mp4_videos/test_folder',
-  model_file='/media/DATA/MODELS/SUPER_RES/checkpoints/adv_color_very_deep_good_init_D_smallerrate_adversarial_G_3',
-  result_path='result'
+  test_folder='',
+  model_file='',
+  result_path=''
 }
 for k,v in pairs(opt) do opt[k] = tonumber(os.getenv(k)) or os.getenv(k) or opt[k] end
 print(opt)

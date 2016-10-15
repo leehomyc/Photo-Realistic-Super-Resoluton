@@ -15,7 +15,6 @@ paths.dofile('dataset.lua')
 ------------------------------------------
 -------- COMMON CACHES and PATHS
 -- Check for existence of opt.data
--- opt.data = os.getenv('DATA_ROOT') or '/media/harryyang/New Volume/vision-harry/mp4_videos/test_folder'
 opt.data = os.getenv('DATA_ROOT') or opt.test_folder
 if not paths.dirp(opt.data) then
     error('Did not find directory: ', opt.data)
