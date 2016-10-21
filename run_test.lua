@@ -25,7 +25,7 @@ for k,v in pairs(opt) do opt[k] = tonumber(os.getenv(k)) or os.getenv(k) or opt[
 print(opt)
 
 local DataLoader = paths.dofile('data/data.lua')
-data = DataLoader.new(opt.nThreads, 4, opt)
+data = DataLoader.new(opt.nThreads, 1, opt)
 
 modelG=util.load(opt.model_file,opt.gpu)
 
