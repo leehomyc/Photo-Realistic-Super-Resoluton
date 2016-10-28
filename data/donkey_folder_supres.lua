@@ -17,7 +17,8 @@ paths.dofile('dataset.lua')
 -- Check for existence of opt.data
 opt.data = os.getenv('DATA_ROOT') or opt.train_folder
 if not paths.dirp(opt.data) then
-    error('Did not find directory: ', opt.data)
+    print('Did not find directory: '..opt.data)
+    os.exit()
 end
 
 -- a cache file of the training metadata (if doesnt exist, will be created)
