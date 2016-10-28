@@ -14,11 +14,10 @@ prepare your images under a sub-folder of a root folder
 train_folder=your_root_folder model_folder=your_save_folder th run_sr.lua 
 ```
 
-<<<<<<< HEAD
 By default it resizes the images to 96x96 as ground truth and 24x24 as input, but you can specify the size using `loadSize`. Note current generator network only supports 4x super-resolution.
-=======
+
 By default it resizes the images to 96x96 as ground truth and 24x24 as input, but you can specify the size using `loadSize` and `scale`.
->>>>>>> 2e06dcd73670f06c9160101f0eb9753a6e81d841
+
 
 ####Loading a saved model to train
 ```
