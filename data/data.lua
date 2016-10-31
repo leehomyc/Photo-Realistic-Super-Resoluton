@@ -6,7 +6,7 @@ local data = {}
 local result = {}
 local unpack = unpack and unpack or table.unpack
 
-function data.new(n, dataset_name, opt_)
+function data.new(n, opt_)
    opt_ = opt_ or {}
    local self = {}
    for k,v in pairs(data) do
@@ -14,12 +14,8 @@ function data.new(n, dataset_name, opt_)
    end
 
    local donkey_file
-   if dataset_name==0 then
-       donkey_file = 'donkey_folder_supres.lua'
-   elseif dataset_name==1 then
-       donkey_file = 'donkey_folder_supres_test.lua'
-   end
-
+   donkey_file = 'donkey_folder_supres.lua'
+   
    if n > 0 then
       local options = opt_
       self.threads = Threads(n,

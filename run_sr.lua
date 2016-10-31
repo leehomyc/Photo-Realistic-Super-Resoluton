@@ -20,7 +20,7 @@ opt = {
   gpu=1,
   nThreads = 4,
   scale=4,
-  train_folder='',
+  t_folder='',
   model_folder='',
 }
 torch.manualSeed(1)
@@ -29,7 +29,7 @@ for k,v in pairs(opt) do opt[k] = tonumber(os.getenv(k)) or os.getenv(k) or opt[
 print(opt)
 
 local DataLoader = paths.dofile('data/data.lua')
-data = DataLoader.new(opt.nThreads, 0, opt)
+data = DataLoader.new(opt.nThreads, opt)
 print("Dataset: " .. opt.dataset, " Size: ", data:size())
 
 local real_label=1

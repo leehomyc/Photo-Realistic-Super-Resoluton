@@ -11,13 +11,12 @@ opt = {
   dataset = 'folder', 
   batchSize=32,
   niter=250,
-  fineSize=96,
   ntrain = math.huge, 
   gpu=1,
   nThreads = 4,
   scale=4,
   loadSize=96,
-  test_folder='',
+  t_folder='',
   model_file='',
   result_path=''
 }
@@ -25,7 +24,7 @@ for k,v in pairs(opt) do opt[k] = tonumber(os.getenv(k)) or os.getenv(k) or opt[
 print(opt)
 
 local DataLoader = paths.dofile('data/data.lua')
-data = DataLoader.new(opt.nThreads, 1, opt)
+data = DataLoader.new(opt.nThreads,  opt)
 
 modelG=util.load(opt.model_file,opt.gpu)
 
