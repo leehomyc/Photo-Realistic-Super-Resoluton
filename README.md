@@ -11,7 +11,7 @@ This is a prototype implementation developed by [Harry Yang](https://scholar.goo
 ####Training
 prepare your images under a sub-folder of a root folder
 ``` bash
-t_folder=your_root_folder model_folder=your_save_folder th run_sr.lua 
+t_folder=your_root_folder model_folder=your_save_folder/ th run_sr.lua 
 ```
 
 By default it resizes the images to 96x96 as ground truth and 24x24 as input, but you can specify the size using `loadSize`. Note current generator network only supports 4x super-resolution.
@@ -21,7 +21,7 @@ By default it resizes the images to 96x96 as ground truth and 24x24 as input, bu
 
 ####Loading a saved model to train
 ```
-D_path=your_saved_D_model G_path=your_saved_G_model t_folder=your_root_folder model_folder=your_save_folder th run_resume.lua
+D_path=your_saved_D_model G_path=your_saved_G_model t_folder=your_root_folder model_folder=your_save_folder/ th run_resume.lua
 ```
 
 ####Testing
