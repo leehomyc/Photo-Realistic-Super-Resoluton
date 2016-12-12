@@ -122,7 +122,7 @@ local fGx=function(x)
     real=real:cuda()
 
     errG = criterion:forward(output, label)
-    errG_mse=criterion_mse:forward(fake,real)
+    errG_mse=criterion_mse:forward(fake,real_uncropped)
 
     local df_do = criterion:backward(output, label)
     local df_do_mse=criterion_mse:backward(fake,real)
