@@ -93,13 +93,15 @@ local fDx=function(x)
     real=real:cuda()
 
     label:fill(real_label)
-    local output=modelD:forward(real)
+    local output=modelD:forward(real_uncropped)
+    print(output:size())
     local errD_real=criterion:forward(output,label)
     local df_do = criterion:backward(output, label)
     modelD:backward(real,df_do)
 
     input=input:cuda()
     fake = modelG:forward(input)
+    print(fake:size())
     label:fill(fake_label)
 
     local output=modelD:forward(fake)
