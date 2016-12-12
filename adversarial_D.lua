@@ -4,7 +4,7 @@ require 'optim'
 require 'image'
 require 'nngraph'
 
-local function createModelD()
+local function createModelD(input_size)
     model=nn.Sequential()
     model:add(nn.SpatialConvolution(1,64,3,3,1,1,1,1))
     model:add(nn.LeakyReLU(0.2))
@@ -31,7 +31,8 @@ local function createModelD()
     model:add(nn.SpatialBatchNormalization(512))
     model:add(nn.SpatialConvolution(512,1024,3,3,2,2,1,1))
     model:add(nn.LeakyReLU(0.2))
-    model:add(nn.SpatialConvolution(1024,1,3,3))
+    kernel_size=input_size/32
+    model:add(nn.SpatialConvolution(1024,1,kernel_size,kernel_size))
     model:add(nn.Sigmoid())
     model:add(nn.View(1))
     return model

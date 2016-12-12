@@ -38,7 +38,7 @@ local fake_label=0
 local G=require 'adversarial_G.lua'
 local modelG = require('weight-init')(G(), 'kaiming')
 local D=require 'adversarial_D.lua'
-local modelD = require('weight-init')(D(),'kaiming')
+local modelD = require('weight-init')(D(loadSize),'kaiming')
 local criterion = nn.BCECriterion() 
 local criterion_mse = nn.MSECriterion()
 
