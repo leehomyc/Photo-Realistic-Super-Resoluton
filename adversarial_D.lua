@@ -5,6 +5,7 @@ require 'image'
 require 'nngraph'
 
 local function createModelD(input_size)
+    print(input_size)
     model=nn.Sequential()
     model:add(nn.SpatialConvolution(1,64,3,3,1,1,1,1))
     model:add(nn.LeakyReLU(0.2))
