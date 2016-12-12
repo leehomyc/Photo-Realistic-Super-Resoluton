@@ -19,7 +19,6 @@ opt = {
   name='super_resolution',
   gpu=1,
   nThreads = 4,
-  scale=4,
   loadSize=96,
   t_folder='',
   model_folder='',
@@ -55,13 +54,11 @@ optimStateD = {
 }
 
 local input = torch.Tensor(opt.batchSize, 1, opt.loadSize/4, opt.loadSize/4) 
-local real = torch.Tensor(opt.batchSize,1,opt.loadSize-3,opt.loadSize-3)
 local real_uncropped = torch.Tensor(opt.batchSize,1,opt.loadSize,opt.loadSize)
-local output = torch.Tensor(opt.batchSize,1,opt.loadSize-3,opt.loadSize-3)
 local errD, errG
 local epoch_tm = torch.Timer()
 local tm = torch.Timer()
-local test = torch.Tensor(1, opt.loadSize-3, opt.loadSize-3) 
+local test = torch.Tensor(1, opt.loadSize, opt.loadSize) 
 local test2 = torch.Tensor(1, opt.loadSize/4, opt.loadSize/4) 
 local label = torch.Tensor(opt.batchSize)
 
@@ -70,8 +67,6 @@ if opt.gpu > 0 then
    print('cunn used')
    cutorch.setDevice(opt.gpu)
    input = input:cuda();  
-   real=real:cuda(); 
-   output=output:cuda();
    modelG=modelG:cuda()
    modelD=modelD:cuda()
    criterion:cuda()
@@ -90,14 +85,12 @@ local fDx=function(x)
 
     real_uncropped,input= data:getBatch()
     real_uncropped=real_uncropped:cuda()
-    real=real_uncropped[{{},{},{1,1+93-1},{1,1+93-1}}]
-    real=real:cuda()
-
+  
     label:fill(real_label)
-    local output=modelD:forward(real)
+    local output=modelD:forward(real_uncropped)
     local errD_real=criterion:forward(output,label)
     local df_do = criterion:backward(output, label)
-    modelD:backward(real,df_do)
+    modelD:backward(real_uncropped,df_do)
 
     input=input:cuda()
     fake = modelG:forward(input)
@@ -118,13 +111,12 @@ local fGx=function(x)
     local output=modelD.output
     
     input=input:cuda()
-    real=real:cuda()
 
     errG = criterion:forward(output, label)
-    errG_mse=criterion_mse:forward(fake,real)
+    errG_mse=criterion_mse:forward(fake,real_uncropped)
 
     local df_do = criterion:backward(output, label)
-    local df_do_mse=criterion_mse:backward(fake,real)
+    local df_do_mse=criterion_mse:backward(fake,real_uncropped)
 
     local df_dg=modelD:updateGradInput(fake,df_do)
     modelG:backward(input,0.001*df_dg+0.999*df_do_mse)
@@ -145,12 +137,11 @@ for epoch = 1, opt.niter do
       counter = counter + 1
       print('count: '..counter)
       if counter % 10 == 0 then
-          test:copy(real[1])
-          print('test:')
+          test:copy(real_uncropped[1])
           local real_rgb=test
           image.save(opt.name..counter..'_real.png',real_rgb)
           test2:copy(input[1])
-          image.save(opt.name..counter..'_test.png',test2)
+          image.save(opt.name..counter..'_input.png',test2)
           fake[fake:gt(1)]=1
           fake[fake:lt(0)]=0
           test:copy(fake[1])
