@@ -13,7 +13,7 @@ paths.dofile('dataset.lua')
 -- This file contains the data-loading logic and details.
 -- It is run by each data-loader thread.
 ------------------------------------------
--------- COMMON CACHES and PATHS
+-------- COMMON CACHES and PATHSF
 -- Check for existence of opt.data
 opt.data = os.getenv('DATA_ROOT') or opt.t_folder
 if not paths.dirp(opt.data) then
@@ -58,7 +58,7 @@ local trainHook = function(self, path)
    local input = loadImage(path)
    local input_y=image.rgb2y(input)
    
-   input=image.scale(input,opt.loadSize/opt.scale,opt.loadSize/opt.scale,'bicubic')
+   input=image.scale(input,opt.loadSize/4,opt.loadSize/4,'bicubic')
    local input_y2=image.rgb2y(input)
   
    return input_y,input_y2

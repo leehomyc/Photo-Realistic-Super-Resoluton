@@ -14,7 +14,7 @@ prepare your images under a sub-folder of a root folder
 t_folder=your_root_folder model_folder=your_save_folder/ th run_sr.lua 
 ```
 
-By default it resizes the images to 96x96 as ground truth and 24x24 as input, but you can specify the size using `loadSize`. Note current generator network only supports 4x super-resolution.
+By default it resizes the images to 96x96 as ground truth and 24x24 as input, but you can specify the size using `loadSize`. Note current generator network only supports 4x super-resolution. In addition, the input size must be dividable to 32
 
 By default it resizes the images to 96x96 as ground truth and 24x24 as input, but you can specify the size using `loadSize` and `scale`.
 
