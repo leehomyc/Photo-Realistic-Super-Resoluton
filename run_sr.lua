@@ -125,7 +125,7 @@ local fGx=function(x)
     errG_mse=criterion_mse:forward(fake,real_uncropped)
 
     local df_do = criterion:backward(output, label)
-    local df_do_mse=criterion_mse:backward(fake,real)
+    local df_do_mse=criterion_mse:backward(fake,real_uncropped)
 
     local df_dg=modelD:updateGradInput(fake,df_do)
     modelG:backward(input,0.001*df_dg+0.999*df_do_mse)
