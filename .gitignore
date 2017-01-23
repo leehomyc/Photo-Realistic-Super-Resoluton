@@ -45,3 +45,5 @@ start_train.sh
 
 .DS_Store
 start_train.sh
+
+*.sh
