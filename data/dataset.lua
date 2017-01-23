@@ -336,8 +336,8 @@ local function tableToOutput(self, dataTable, dataTable2,scalarTable)
            self.sampleSize[1], self.sampleSize[2]/4, self.sampleSize[3]/4)
    scalarLabels = torch.LongTensor(quantity):fill(-1111)
    for i=1,#dataTable do
-    print('data'..data[i]:size())
-    print('dataTable'..dataTable[i]:size())
+    print(data[i]:size())
+    print(dataTable[i]:size())
       data[i]:copy(dataTable[i])
       data2[i]:copy(dataTable2[i])
       scalarLabels[i] = scalarTable[i]
