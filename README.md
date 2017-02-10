@@ -33,7 +33,19 @@ t_folder=your_root_folder model_file=your_G_model result_path=location_to_save_r
 ## Report Issues
 [Contact](mailto:harryyang.hk@gmail.com)
 
-##Todo:
+## Citation
 
-1. Add TV loss.
-2. Provide trained models.
+If you find this code useful for your research, please cite:
+
+```
+@misc{Johnson2015,
+  author = {Yang, Harry},
+  title = {super-resolution using GAN},
+  year = {2016},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/leehomyc/Photo-Realistic-Super-Resoluton}},
+}
+```
+
+```
